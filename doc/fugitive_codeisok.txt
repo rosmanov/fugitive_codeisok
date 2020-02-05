@@ -1,0 +1,52 @@
+*fugitive_codeisok.txt*  Fugitive upstream provider for Codeisok
+*fugitive_codeisok*
+
+==============================================================================
+CONTENTS                                                  *fugitive_codeisok-contents*
+
+   1. Intro.............................................. |fugitive_codeisok-intro|
+   2. Options............................................ |fugitive_codeisok-options|
+   3. Usage.............................................. |fugitive_codeisok-usage|
+   4. Credits............................................ |fugitive_codeisok-credits|
+
+==============================================================================
+INTRO                                                        *fugitive_codeisok-intro*
+
+Fugitive (https://github.com/tpope/vim-fugitive) is a Vim plugin serving as
+a gateway to Git. The plugin provides `:Gbrowse` command for opening the
+current file, blob, tree, commit, or tag in Web browser. There is a number
+of upstream provider plugins for the popular Git platforms such as GitHub
+and Bitbucket. This plugin implements an upstream provider for Codeisok
+(https://github.com/badoo/codeisok).
+
+
+==============================================================================
+OPTIONS                                                    *fugitive_codeisok-options*
+
+Overview:~
+
+  fugitive_codeisok_url_base...........Codeisok base URL.
+
+------------------------------------------------------------------------------
+Detailed descriptions and default values:~
+
+                                                        *'g:fugitive_codeisok_url_base'*
+Base URL of the Codeisok Web interface.
+Default: `https://codeisok.badoojira.com`
+
+
+==============================================================================
+USAGE                                                        *fugitive_codeisok-usage*
+
+Invoke `:Gbrowse` just normally.
+
+
+==============================================================================
+CREDITS                                                    *fugitive_codeisok-credits*
+
+Author: Ruslan Osmanov <ruslan.osmanov@corp.badoo.com>
+
+Homepage: https://github.com/rosmanov/fugitive_codeisok
+
+
+" vim: set expandtab sts=2 ts=2 sw=2 tw=78 ft=help norl:
