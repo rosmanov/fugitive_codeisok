@@ -16,29 +16,45 @@ function! s:codeisok_url(opts, ...) abort
   endif
   let path = substitute(a:opts.path, '^/', '', '')
 
-  let repo = matchstr(a:opts.remote, '\(:\)\@<=.*\.git$')
+  "let repo = matchstr(a:opts.remote, '\(:\)\@<=.*\.git$') if repo ==# ''
+    "return ''
+  "endif
+
+  let domain_pattern = ''
+  let domains = exists('g:fugitive_codeisok_domains') ? g:fugitive_codeisok_domains : []
+  for domain in domains
+    let domain_pattern .= '\|' . escape(split(domain, '://')[-1], '.')
+  endfor
+  let repo = matchstr(a:opts.remote,'^\%(https\=://\|git://\|\(ssh://\)\=git@\)\%(.\{-\}@\)\=\('.domain_pattern.'\)[/:]\zs.\{-\}\%(\.git\)\ze$')
   if repo ==# ''
     return ''
   endif
 
   let base_url = exists('g:fugitive_codeisok_url_base') ? g:fugitive_codeisok_url_base : 'https://codeisok.badoojira.com'
 
-  let root = base_url . '/?a=blob&p=' . repo
+  let root = base_url . '/?p=' . repo
 
   if path =~# '^\.git/refs/heads/'
-    return root . '&h=' . path[16:-1]
+    return root . '&a=commit&h=' . path[16:-1]
   elseif path =~# '^\.git/refs/tags/'
-    return root . '&h=' .path[15:-1]
+    return root . '&a=commit&h=' .path[15:-1]
   elseif path =~# '^\.git\>'
     return root
   endif
 
-  let commit = a:opts.repo.rev_parse('HEAD')
+  if a:opts.commit =~# '^\d\=$'
+    let commit = a:opts.repo.rev_parse('HEAD')
+  elseif a:opts.commit =~# '^\x\{40,\}$'
+    let commit = a:opts.commit
+  else
+    echo ">>> commit: " . a:opts.commit
+    let commit = 'refs/heads/' . a:opts.repo.head()
+  endif
 
   if get(a:opts, 'type', '') ==# 'tree' || a:opts.path =~# '/$'
-    let url = root . '&hb=' . commit . '&f=' . path
+    let url = root . '&a=blob&hb=' . commit . '&f=' . path
   elseif get(a:opts, 'type', '') ==# 'blob' || a:opts.path =~# '[^/]$'
-    let url = root . '&hb=' . commit . '&f=' . path
+    let url = root . '&a=blob&hb=' . commit . '&f=' . path
     if get(a:opts, 'line1')
       let url .= '#L' . a:opts.line1
       " Line ranges seem to be unspported in Codeisok
@@ -47,7 +63,7 @@ function! s:codeisok_url(opts, ...) abort
       endif
     endif
   else
-    let url = root . '&hb=' . commit
+    let url = root . '&a=commit&h=' . commit
   endif
   return url
 endfunction
