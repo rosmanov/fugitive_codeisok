@@ -26,6 +26,7 @@ OPTIONS                                                    *fugitive_codeisok-op
 Overview:~
 
   fugitive_codeisok_url_base...........Codeisok base URL.
+  fugitive_codeisok_domains............Domains used in Git upstream URIs.
 
 ------------------------------------------------------------------------------
 Detailed descriptions and default values:~
@@ -33,6 +34,12 @@ Detailed descriptions and default values:~
                                                         *'g:fugitive_codeisok_url_base'*
 Base URL of the Codeisok Web interface.
 Default: `https://codeisok.badoojira.com`
+                                                        *'g:fugitive_codeisok_domains'*
+A list of domains used in Git upstream URIs. The Codeisok Fugitive provider
+will only be used if the current Git upstream URI matches one of the domains
+specified in `g:fugitive_codeisok_domains`.
+Default: `[]`
+Example: `let g:fugitive_codeisok_domains = ["git.local1", "git.local2"]`
 
 
 ==============================================================================
